@@ -423,17 +423,19 @@ html {
     margin-top: 1rem;
 }
 
-/* Timeline Styles */
+/* Timeline Styles - Alternating Left/Right */
 .timeline {
     position: relative;
     padding: 2rem 0;
     margin: 2rem 0;
+    max-width: 1200px;
 }
 
 .timeline::before {
     content: '';
     position: absolute;
-    left: 30px;
+    left: 50%;
+    transform: translateX(-50%);
     top: 0;
     bottom: 0;
     width: 4px;
@@ -443,10 +445,26 @@ html {
 
 .timeline-item {
     position: relative;
-    padding-left: 80px;
-    margin-bottom: 2.5rem;
+    width: 100%;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: flex-start;
     animation: fadeInLeft 0.6s ease forwards;
     opacity: 0;
+}
+
+/* Items impairs (1, 3, 5, 7) - à gauche */
+.timeline-item:nth-child(odd) {
+    justify-content: flex-end;
+    padding-right: calc(50% + 40px);
+    animation-name: fadeInRight;
+}
+
+/* Items pairs (2, 4, 6) - à droite */
+.timeline-item:nth-child(even) {
+    justify-content: flex-start;
+    padding-left: calc(50% + 40px);
+    animation-name: fadeInLeft;
 }
 
 .timeline-item:nth-child(1) { animation-delay: 0.1s; }
@@ -460,7 +478,18 @@ html {
 @keyframes fadeInLeft {
     from {
         opacity: 0;
-        transform: translateX(-30px);
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
     }
     to {
         opacity: 1;
@@ -470,20 +499,21 @@ html {
 
 .timeline-marker {
     position: absolute;
-    left: 18px;
+    left: 50%;
+    transform: translateX(-50%);
     top: 0;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 4px solid var(--bg-white);
     box-shadow: var(--shadow-md);
-    z-index: 1;
+    z-index: 2;
     transition: all 0.3s ease;
 }
 
 .timeline-item:hover .timeline-marker {
-    transform: scale(1.3);
-    box-shadow: var(--shadow-lg);
+    transform: translateX(-50%) scale(1.2);
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.1), var(--shadow-lg);
 }
 
 .marker-primary {
@@ -507,26 +537,49 @@ html {
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: var(--shadow-md);
-    border-left: 4px solid var(--primary-color);
     transition: all 0.3s ease;
     position: relative;
+    width: 100%;
+    max-width: 500px;
 }
 
-.timeline-content::before {
+/* Flèche pointant vers le centre pour les items de gauche */
+.timeline-item:nth-child(odd) .timeline-content {
+    border-right: 4px solid var(--primary-color);
+}
+
+.timeline-item:nth-child(odd) .timeline-content::before {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 12px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid var(--bg-white);
+}
+
+/* Flèche pointant vers le centre pour les items de droite */
+.timeline-item:nth-child(even) .timeline-content {
+    border-left: 4px solid var(--primary-color);
+}
+
+.timeline-item:nth-child(even) .timeline-content::before {
     content: '';
     position: absolute;
     left: -12px;
-    top: 8px;
+    top: 12px;
     width: 0;
     height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: 8px solid var(--bg-white);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid var(--bg-white);
 }
 
 .timeline-item:hover .timeline-content {
-    transform: translateX(5px);
     box-shadow: var(--shadow-lg);
+    transform: scale(1.02);
 }
 
 .timeline-date {
@@ -555,23 +608,34 @@ html {
 }
 
 /* Couleurs spécifiques pour les différents types d'événements */
-.timeline-item:nth-child(1) .timeline-content,
+/* Période problématique - Rouge */
+.timeline-item:nth-child(1):nth-child(odd) .timeline-content {
+    border-right-color: var(--danger-color);
+}
+.timeline-item:nth-child(1):nth-child(even) .timeline-content,
 .timeline-item:nth-child(2) .timeline-content {
     border-left-color: var(--danger-color);
 }
 
-.timeline-item:nth-child(3) .timeline-content,
+/* Premières solutions - Orange */
+.timeline-item:nth-child(3) .timeline-content {
+    border-right-color: var(--accent-color);
+}
 .timeline-item:nth-child(4) .timeline-content {
     border-left-color: var(--accent-color);
 }
 
-.timeline-item:nth-child(5) .timeline-content,
+/* Améliorations - Vert */
+.timeline-item:nth-child(5) .timeline-content {
+    border-right-color: var(--secondary-color);
+}
 .timeline-item:nth-child(6) .timeline-content {
     border-left-color: var(--secondary-color);
 }
 
+/* État actuel - Bleu */
 .timeline-item:nth-child(7) .timeline-content {
-    border-left-color: var(--primary-color);
+    border-right-color: var(--primary-color);
 }
 
 .timeline-item:nth-child(1) .timeline-date,
@@ -787,25 +851,60 @@ html {
         padding: 1.5rem;
     }
 
-    /* Timeline responsive */
+    /* Timeline responsive - retour au style vertical simple */
     .timeline::before {
-        left: 15px;
+        left: 20px;
+        transform: none;
     }
 
     .timeline-item {
-        padding-left: 50px;
+        padding-left: 60px;
+        padding-right: 0;
         margin-bottom: 2rem;
+        justify-content: flex-start !important;
+    }
+
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        padding-left: 60px;
+        padding-right: 0;
+        justify-content: flex-start;
     }
 
     .timeline-marker {
-        left: 7px;
-        width: 16px;
-        height: 16px;
+        left: 12px;
+        transform: none;
+        width: 20px;
+        height: 20px;
         border-width: 3px;
+    }
+
+    .timeline-item:hover .timeline-marker {
+        transform: scale(1.15);
     }
 
     .timeline-content {
         padding: 1rem;
+        max-width: 100%;
+    }
+
+    /* Flèches uniformes à gauche pour mobile */
+    .timeline-item:nth-child(odd) .timeline-content,
+    .timeline-item:nth-child(even) .timeline-content {
+        border-left: 4px solid var(--primary-color);
+        border-right: none;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content::before {
+        left: -12px;
+        right: auto;
+        border-left: none;
+        border-right: 10px solid var(--bg-white);
+    }
+
+    .timeline-item:nth-child(even) .timeline-content::before {
+        left: -12px;
+        border-right: 10px solid var(--bg-white);
     }
 
     .timeline-content h4 {

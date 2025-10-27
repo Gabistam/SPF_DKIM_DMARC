@@ -704,11 +704,145 @@
                 </div>
             </div>
 
+            <!-- Section spéciale développeur fullstack solo -->
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    🚀 Cas particulier : Je suis développeur fullstack et seul sur mon projet
+                </div>
+                <div class="dropdown-content">
+                    <div class="alert alert-info">
+                        <strong>📌 Situation :</strong>
+                        Vous êtes freelance, auto-entrepreneur ou travaillez sur un projet personnel ? Vous devez gérer VOUS-MÊME la configuration SPF/DKIM/DMARC. Voici comment procéder simplement.
+                    </div>
+
+                    <h4 style="margin-top: 2rem; color: var(--primary-color);">🎯 Option 1 : Utiliser un service d'envoi d'emails (RECOMMANDÉ pour débutants)</h4>
+
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <h4>📧 Services recommandés</h4>
+                            <ul>
+                                <li><strong>Brevo (ex-Sendinblue)</strong> - Gratuit jusqu'à 300 emails/jour</li>
+                                <li><strong>Mailgun</strong> - 5000 emails/mois gratuits</li>
+                                <li><strong>SendGrid</strong> - 100 emails/jour gratuits</li>
+                                <li><strong>Amazon SES</strong> - Très économique si sur AWS</li>
+                            </ul>
+                        </div>
+                        <div class="card card-secondary">
+                            <h4>✅ Avantages de cette approche</h4>
+                            <ul>
+                                <li>SPF/DKIM/DMARC déjà configurés par le service</li>
+                                <li>Haute délivrabilité garantie</li>
+                                <li>Pas de serveur email à maintenir</li>
+                                <li>Documentation claire pour intégration</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success" style="margin-top: 1rem;">
+                        <strong>💡 Conseil de pro :</strong>
+                        En tant que développeur fullstack débutant, cette option est LA solution recommandée. Ces services s'occupent de toute la complexité technique pour vous !
+                    </div>
+
+                    <h4 style="margin-top: 2rem; color: var(--accent-color);">⚙️ Option 2 : Configuration manuelle (pour les plus avancés)</h4>
+
+                    <p>Si vous voulez configurer vous-même SPF/DKIM/DMARC sur votre propre domaine :</p>
+
+                    <div class="checklist-category" style="margin-top: 1rem;">
+                        <div class="checklist-header header-accent">
+                            <h3>📝 Étapes simplifiées de configuration</h3>
+                        </div>
+                        <div class="checklist-content">
+                            <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; margin-bottom: 1rem;">
+                                <strong>1️⃣ Accéder à la zone DNS de votre domaine</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">
+                                    Connectez-vous chez votre registrar (OVH, Gandi, Namecheap...) et accédez à la gestion DNS de votre domaine
+                                </p>
+                            </div>
+
+                            <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; margin-bottom: 1rem;">
+                                <strong>2️⃣ Ajouter un enregistrement SPF (Type TXT)</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">
+                                    Exemple si vous utilisez Gmail pour envoyer : <br>
+                                    <code style="background: rgba(0,0,0,0.1); padding: 0.25rem 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
+                                    v=spf1 include:_spf.google.com ~all
+                                    </code>
+                                </p>
+                            </div>
+
+                            <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; margin-bottom: 1rem;">
+                                <strong>3️⃣ Configurer DKIM (plus technique)</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">
+                                    Générer une paire de clés DKIM et ajouter la clé publique dans le DNS. <br>
+                                    <strong>Conseil :</strong> Suivre la documentation de votre service email (Gmail, Outlook, etc.)
+                                </p>
+                            </div>
+
+                            <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; margin-bottom: 1rem;">
+                                <strong>4️⃣ Ajouter un enregistrement DMARC (Type TXT)</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">
+                                    Nom : <code>_dmarc.votredomaine.com</code><br>
+                                    Valeur simple pour débuter : <br>
+                                    <code style="background: rgba(0,0,0,0.1); padding: 0.25rem 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
+                                    v=DMARC1; p=none; rua=mailto:votre-email@votredomaine.com
+                                    </code>
+                                </p>
+                            </div>
+
+                            <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px; margin-bottom: 1rem;">
+                                <strong>5️⃣ Tester avec MXToolbox.com</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">
+                                    Vérifier que tous les enregistrements sont correctement détectés et valides
+                                </p>
+                            </div>
+
+                            <div style="padding: 1rem; background: var(--bg-light); border-radius: 8px;">
+                                <strong>6️⃣ Tester l'envoi avec mail-tester.com</strong>
+                                <p style="margin-top: 0.5rem; color: var(--text-light);">
+                                    Envoyer un email de test et viser un score de 8/10 minimum
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning" style="margin-top: 1rem;">
+                        <strong>⚠️ Attention :</strong>
+                        La configuration manuelle nécessite des connaissances en DNS et en administration système. Si vous débutez, privilégiez l'Option 1 avec un service d'envoi d'emails !
+                    </div>
+
+                    <h4 style="margin-top: 2rem; color: var(--secondary-color);">📚 Ressources pour aller plus loin</h4>
+
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <h4>🎓 Tutoriels recommandés</h4>
+                            <ul>
+                                <li><a href="https://www.brevo.com/fr/blog/configurer-dkim-spf/" target="_blank" style="color: var(--primary-color);">Guide Brevo SPF/DKIM</a></li>
+                                <li><a href="https://support.google.com/a/answer/33786" target="_blank" style="color: var(--primary-color);">Documentation Google Workspace SPF</a></li>
+                                <li><a href="https://dmarc.org/overview/" target="_blank" style="color: var(--primary-color);">DMARC.org - Documentation officielle</a></li>
+                            </ul>
+                        </div>
+                        <div class="card card-secondary">
+                            <h4>🛠️ Outils pour tester</h4>
+                            <ul>
+                                <li><strong>MXToolbox.com</strong> - Vérification complète DNS</li>
+                                <li><strong>Mail-tester.com</strong> - Score de délivrabilité</li>
+                                <li><strong>DMARCian.com</strong> - Générateur DMARC</li>
+                                <li><strong>EasyDMARC.com</strong> - Outils et guides</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success" style="margin-top: 1rem;">
+                        <strong>🎯 Recommandation finale :</strong>
+                        Commencez TOUJOURS par l'Option 1 (service d'envoi). Une fois votre projet stable et que vous envoyez beaucoup d'emails, vous pourrez envisager la configuration manuelle pour réduire les coûts. Mais en début de projet : simplicité avant tout !
+                    </div>
+                </div>
+            </div>
+
             <!-- Quiz 4 -->
             <div class="quiz-container" id="quiz4">
                 <h3>🧠 Quiz 4 - Vérification pratique</h3>
                 <div class="quiz-question">
-                    <p>Question <span id="quiz4-current">1</span>/5</p>
+                    <p>Question <span id="quiz4-current">1</span>/7</p>
                     <div id="quiz4-question-text"></div>
                 </div>
                 <div class="quiz-answers" id="quiz4-answers"></div>
@@ -716,7 +850,7 @@
                 <div class="quiz-result" id="quiz4-result" style="display: none;"></div>
                 <div style="margin-top: 1rem;">
                     <div style="background: var(--bg-light); height: 8px; border-radius: 4px;">
-                        <div id="quiz4-progress" style="background: var(--gradient-primary); height: 100%; border-radius: 4px; width: 20%; transition: width 0.3s ease;"></div>
+                        <div id="quiz4-progress" style="background: var(--gradient-primary); height: 100%; border-radius: 4px; width: 14%; transition: width 0.3s ease;"></div>
                     </div>
                 </div>
             </div>
@@ -836,233 +970,205 @@
 
         <!-- Section Checklist des bonnes pratiques -->
         <section id="checklist" class="section">
-            <h2 class="section-title">✅ Checklist - Bonnes pratiques à appliquer</h2>
+            <h2 class="section-title">✅ Checklist - Ce que vous devez savoir et vérifier</h2>
 
             <div class="alert alert-success">
-                <strong>🎯 Guide pratique :</strong>
-                Utilisez cette checklist comme référence lors de la mise en place ou de la vérification de la sécurité email d'un domaine.
+                <strong>🎯 Guide pratique pour développeurs web :</strong>
+                Cette checklist résume ce que vous devez comprendre, vérifier et savoir faire en tant que développeur web concernant la sécurité email.
             </div>
 
-            <!-- Checklist SPF -->
+            <!-- Checklist Compréhension -->
             <div class="checklist-category">
                 <div class="checklist-header header-primary">
-                    <h3>🔐 SPF - Sender Policy Framework</h3>
+                    <h3>🧠 Compréhension - Ce que j'ai appris</h3>
                 </div>
                 <div class="checklist-content">
                     <div class="checklist-item">
-                        <input type="checkbox" id="spf1" class="checklist-checkbox">
-                        <label for="spf1" class="checklist-label">
-                            <strong>Créer un enregistrement SPF dans le DNS</strong>
-                            <p>Ajouter un enregistrement TXT dans la zone DNS de votre domaine (ex: v=spf1 include:_spf.google.com ~all)</p>
+                        <input type="checkbox" id="learn1" class="checklist-checkbox">
+                        <label for="learn1" class="checklist-label">
+                            <strong>Je comprends pourquoi les emails peuvent être "faux"</strong>
+                            <p>Sur internet, n'importe qui peut mentir sur l'expéditeur d'un email sans ces protections</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="spf2" class="checklist-checkbox">
-                        <label for="spf2" class="checklist-label">
-                            <strong>Lister TOUS les serveurs autorisés</strong>
-                            <p>Inclure tous les services qui envoient des emails pour vous (Google, Mailchimp, Sendinblue, serveurs internes...)</p>
+                        <input type="checkbox" id="learn2" class="checklist-checkbox">
+                        <label for="learn2" class="checklist-label">
+                            <strong>Je sais ce que fait SPF en termes simples</strong>
+                            <p>SPF = liste publique des serveurs autorisés à envoyer des emails pour un domaine (comme une liste VIP)</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="spf3" class="checklist-checkbox">
-                        <label for="spf3" class="checklist-label">
-                            <strong>Limiter le nombre de lookups DNS</strong>
-                            <p>Maximum 10 lookups DNS autorisés. Utiliser des mécanismes compacts pour éviter de dépasser cette limite</p>
+                        <input type="checkbox" id="learn3" class="checklist-checkbox">
+                        <label for="learn3" class="checklist-label">
+                            <strong>Je sais ce que fait DKIM en termes simples</strong>
+                            <p>DKIM = signature électronique sur chaque email pour prouver qu'il n'a pas été modifié</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="spf4" class="checklist-checkbox">
-                        <label for="spf4" class="checklist-label">
-                            <strong>Choisir la bonne politique de fin (-all, ~all, ?all)</strong>
-                            <p>-all = strict (rejet), ~all = souple (soft fail recommandé), ?all = neutre</p>
+                        <input type="checkbox" id="learn4" class="checklist-checkbox">
+                        <label for="learn4" class="checklist-label">
+                            <strong>Je sais ce que fait DMARC en termes simples</strong>
+                            <p>DMARC = règlement qui dit quoi faire si SPF ou DKIM échouent (ignorer, spam, ou bloquer)</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="spf5" class="checklist-checkbox">
-                        <label for="spf5" class="checklist-label">
-                            <strong>Tester l'enregistrement SPF avec des outils</strong>
-                            <p>Utiliser MXToolbox, Kitterman SPF Validator ou Google Admin Toolbox pour valider la syntaxe</p>
+                        <input type="checkbox" id="learn5" class="checklist-checkbox">
+                        <label for="learn5" class="checklist-label">
+                            <strong>Je comprends pourquoi les 3 protections sont nécessaires ensemble</strong>
+                            <p>Une seule protection peut être contournée, les 3 ensemble créent une défense multicouche efficace</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="spf6" class="checklist-checkbox">
-                        <label for="spf6" class="checklist-label">
-                            <strong>Maintenir à jour la liste des serveurs</strong>
-                            <p>Réviser régulièrement (tous les 6 mois) et retirer les anciens services non utilisés</p>
+                        <input type="checkbox" id="learn6" class="checklist-checkbox">
+                        <label for="learn6" class="checklist-label">
+                            <strong>Je comprends l'impact sur mes applications web</strong>
+                            <p>Sans ces protections, les emails de mon app (confirmations, mot de passe oublié) finiront en spam</p>
                         </label>
                     </div>
                 </div>
             </div>
 
-            <!-- Checklist DKIM -->
+            <!-- Checklist Vérification -->
             <div class="checklist-category">
                 <div class="checklist-header header-secondary">
-                    <h3>✍️ DKIM - DomainKeys Identified Mail</h3>
+                    <h3>🔍 Vérification - Ce que je sais faire</h3>
                 </div>
                 <div class="checklist-content">
                     <div class="checklist-item">
-                        <input type="checkbox" id="dkim1" class="checklist-checkbox">
-                        <label for="dkim1" class="checklist-label">
-                            <strong>Générer une paire de clés cryptographiques (publique/privée)</strong>
-                            <p>Utiliser une taille de clé de 2048 bits minimum pour la sécurité (4096 bits recommandé)</p>
+                        <input type="checkbox" id="verify1" class="checklist-checkbox">
+                        <label for="verify1" class="checklist-label">
+                            <strong>Je sais vérifier si un domaine a SPF avec MXToolbox</strong>
+                            <p>Aller sur mxtoolbox.com et chercher le domaine pour voir son enregistrement SPF</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dkim2" class="checklist-checkbox">
-                        <label for="dkim2" class="checklist-label">
-                            <strong>Publier la clé publique dans le DNS</strong>
-                            <p>Créer un enregistrement TXT avec le sélecteur (ex: selector._domainkey.votredomaine.com)</p>
+                        <input type="checkbox" id="verify2" class="checklist-checkbox">
+                        <label for="verify2" class="checklist-label">
+                            <strong>Je sais vérifier si un domaine a DKIM avec MXToolbox</strong>
+                            <p>Utiliser l'outil DKIM Lookup de MXToolbox pour vérifier la présence de clés DKIM</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dkim3" class="checklist-checkbox">
-                        <label for="dkim3" class="checklist-label">
-                            <strong>Configurer le serveur email pour signer avec DKIM</strong>
-                            <p>Installer la clé privée sur votre serveur mail et activer la signature automatique des emails sortants</p>
+                        <input type="checkbox" id="verify3" class="checklist-checkbox">
+                        <label for="verify3" class="checklist-label">
+                            <strong>Je sais vérifier si un domaine a DMARC avec MXToolbox</strong>
+                            <p>Chercher l'enregistrement DMARC du domaine pour voir sa politique de sécurité</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dkim4" class="checklist-checkbox">
-                        <label for="dkim4" class="checklist-label">
-                            <strong>Utiliser des sélecteurs multiples si nécessaire</strong>
-                            <p>Créer plusieurs sélecteurs DKIM pour différents services (ex: google._domainkey, newsletter._domainkey)</p>
+                        <input type="checkbox" id="verify4" class="checklist-checkbox">
+                        <label for="verify4" class="checklist-label">
+                            <strong>Je sais tester la qualité d'un email avec mail-tester.com</strong>
+                            <p>Envoyer un email de test et obtenir un score sur 10 avec les problèmes détectés</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dkim5" class="checklist-checkbox">
-                        <label for="dkim5" class="checklist-label">
-                            <strong>Tester la signature DKIM</strong>
-                            <p>Envoyer un email de test à mail-tester.com ou check-auth@verifier.port25.com</p>
+                        <input type="checkbox" id="verify5" class="checklist-checkbox">
+                        <label for="verify5" class="checklist-label">
+                            <strong>Je peux interpréter les résultats de base</strong>
+                            <p>Comprendre si une protection est présente, absente, ou mal configurée selon les outils</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dkim6" class="checklist-checkbox">
-                        <label for="dkim6" class="checklist-label">
-                            <strong>Planifier une rotation des clés</strong>
-                            <p>Renouveler les clés DKIM tous les 1-2 ans pour maintenir la sécurité</p>
+                        <input type="checkbox" id="verify6" class="checklist-checkbox">
+                        <label for="verify6" class="checklist-label">
+                            <strong>Je sais comparer un site bien protégé vs mal protégé</strong>
+                            <p>Vérifier google.com (bien protégé) vs un petit site local (souvent mal protégé)</p>
                         </label>
                     </div>
                 </div>
             </div>
 
-            <!-- Checklist DMARC -->
+            <!-- Checklist Bonnes pratiques développeur -->
             <div class="checklist-category">
                 <div class="checklist-header header-accent">
-                    <h3>📋 DMARC - Domain-based Message Authentication</h3>
+                    <h3>👨‍💻 En tant que développeur - Ce que je dois faire</h3>
                 </div>
                 <div class="checklist-content">
                     <div class="checklist-item">
-                        <input type="checkbox" id="dmarc1" class="checklist-checkbox">
-                        <label for="dmarc1" class="checklist-label">
-                            <strong>Commencer avec une politique "none" (surveillance)</strong>
-                            <p>Débuter avec p=none pour collecter des rapports sans impacter la délivrabilité</p>
+                        <input type="checkbox" id="dev1" class="checklist-checkbox">
+                        <label for="dev1" class="checklist-label">
+                            <strong>Vérifier les protections AVANT de développer l'envoi d'emails</strong>
+                            <p>Toujours vérifier que le domaine de l'app a SPF/DKIM/DMARC avant de coder la fonctionnalité email</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dmarc2" class="checklist-checkbox">
-                        <label for="dmarc2" class="checklist-label">
-                            <strong>Créer l'enregistrement DMARC dans le DNS</strong>
-                            <p>Ajouter un TXT sur _dmarc.votredomaine.com (ex: v=DMARC1; p=none; rua=mailto:dmarc@votredomaine.com)</p>
+                        <input type="checkbox" id="dev2" class="checklist-checkbox">
+                        <label for="dev2" class="checklist-label">
+                            <strong>Tester mes emails en environnement de développement</strong>
+                            <p>Utiliser mail-tester.com pour vérifier que mes emails de test obtiennent un bon score (8/10 minimum)</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dmarc3" class="checklist-checkbox">
-                        <label for="dmarc3" class="checklist-label">
-                            <strong>Configurer les adresses de rapports (rua et ruf)</strong>
-                            <p>rua = rapports agrégés quotidiens, ruf = rapports forensiques détaillés (optionnel)</p>
+                        <input type="checkbox" id="dev3" class="checklist-checkbox">
+                        <label for="dev3" class="checklist-label">
+                            <strong>Documenter les services email utilisés dans mon projet</strong>
+                            <p>Noter quel service envoie les emails (Sendinblue, Gmail, serveur dédié...) pour aider l'admin système</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dmarc4" class="checklist-checkbox">
-                        <label for="dmarc4" class="checklist-label">
-                            <strong>Analyser les rapports DMARC régulièrement</strong>
-                            <p>Utiliser des outils comme DMARC Analyzer, Postmark ou dmarcian pour interpréter les rapports</p>
+                        <input type="checkbox" id="dev4" class="checklist-checkbox">
+                        <label for="dev4" class="checklist-label">
+                            <strong>Communiquer avec l'admin si problème de délivrabilité</strong>
+                            <p>Si les emails finissent en spam, savoir expliquer le problème et demander la vérification SPF/DKIM/DMARC</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dmarc5" class="checklist-checkbox">
-                        <label for="dmarc5" class="checklist-label">
-                            <strong>Passer progressivement à "quarantine" puis "reject"</strong>
-                            <p>Après 2-4 semaines de surveillance, augmenter la strictness : p=quarantine puis p=reject</p>
+                        <input type="checkbox" id="dev5" class="checklist-checkbox">
+                        <label for="dev5" class="checklist-label">
+                            <strong>Prévoir des tests de bout-en-bout incluant les emails</strong>
+                            <p>Tester que les emails arrivent bien dans la boîte de réception (pas spam) lors des tests d'intégration</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="dmarc6" class="checklist-checkbox">
-                        <label for="dmarc6" class="checklist-label">
-                            <strong>Définir le pourcentage d'application (pct)</strong>
-                            <p>Commencer avec pct=10 (10% des emails) puis augmenter progressivement jusqu'à 100%</p>
-                        </label>
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="dmarc7" class="checklist-checkbox">
-                        <label for="dmarc7" class="checklist-label">
-                            <strong>Appliquer DMARC aux sous-domaines</strong>
-                            <p>Utiliser la balise sp= pour définir la politique des sous-domaines (ex: sp=reject)</p>
+                        <input type="checkbox" id="dev6" class="checklist-checkbox">
+                        <label for="dev6" class="checklist-label">
+                            <strong>Gérer les erreurs d'envoi d'email dans mon code</strong>
+                            <p>Prévoir des logs clairs et des messages d'erreur si l'envoi échoue (pour faciliter le diagnostic)</p>
                         </label>
                     </div>
                 </div>
             </div>
 
-            <!-- Checklist Bonnes pratiques générales -->
+            <!-- Checklist Communication -->
             <div class="checklist-category">
                 <div class="checklist-header header-gradient">
-                    <h3>🛡️ Bonnes pratiques générales</h3>
+                    <h3>🤝 Travail d'équipe - Ce que je dois savoir communiquer</h3>
                 </div>
                 <div class="checklist-content">
                     <div class="checklist-item">
-                        <input type="checkbox" id="general1" class="checklist-checkbox">
-                        <label for="general1" class="checklist-label">
-                            <strong>Implémenter les 3 protocoles ensemble (SPF + DKIM + DMARC)</strong>
-                            <p>La protection complète nécessite les trois mécanismes travaillant de concert</p>
+                        <input type="checkbox" id="team1" class="checklist-checkbox">
+                        <label for="team1" class="checklist-label">
+                            <strong>Identifier qui est responsable de la configuration DNS</strong>
+                            <p>Savoir vers qui me tourner (admin système, hébergeur, DevOps) pour demander l'ajout de SPF/DKIM/DMARC</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="general2" class="checklist-checkbox">
-                        <label for="general2" class="checklist-label">
-                            <strong>Documenter toute la configuration</strong>
-                            <p>Maintenir une documentation claire : quels services envoient des emails, configuration DNS, contacts responsables</p>
+                        <input type="checkbox" id="team2" class="checklist-checkbox">
+                        <label for="team2" class="checklist-label">
+                            <strong>Expliquer l'impact business aux non-techniques</strong>
+                            <p>Pouvoir dire simplement : "Sans ces protections, nos clients ne recevront pas les emails de confirmation"</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="general3" class="checklist-checkbox">
-                        <label for="general3" class="checklist-label">
-                            <strong>Surveiller les métriques de délivrabilité</strong>
-                            <p>Suivre le taux d'emails marqués comme spam, taux d'ouverture, et rebonds (bounces)</p>
+                        <input type="checkbox" id="team3" class="checklist-checkbox">
+                        <label for="team3" class="checklist-label">
+                            <strong>Savoir quand alerter sur un problème de sécurité email</strong>
+                            <p>Si je découvre qu'un domaine n'a aucune protection, je dois le signaler à l'équipe</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="general4" class="checklist-checkbox">
-                        <label for="general4" class="checklist-label">
-                            <strong>Effectuer des tests réguliers</strong>
-                            <p>Tester mensuellement avec mail-tester.com, MXToolbox et envoyer des emails de test</p>
+                        <input type="checkbox" id="team4" class="checklist-checkbox">
+                        <label for="team4" class="checklist-label">
+                            <strong>Partager les résultats de tests avec l'équipe</strong>
+                            <p>Envoyer des captures de MXToolbox ou mail-tester.com pour montrer les problèmes détectés</p>
                         </label>
                     </div>
                     <div class="checklist-item">
-                        <input type="checkbox" id="general5" class="checklist-checkbox">
-                        <label for="general5" class="checklist-label">
-                            <strong>Former l'équipe technique</strong>
-                            <p>Assurer que développeurs et administrateurs comprennent l'importance de ces protections</p>
-                        </label>
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="general6" class="checklist-checkbox">
-                        <label for="general6" class="checklist-label">
-                            <strong>Planifier une revue trimestrielle</strong>
-                            <p>Vérifier tous les 3 mois : configuration actuelle, rapports DMARC, nouveaux services à ajouter</p>
-                        </label>
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="general7" class="checklist-checkbox">
-                        <label for="general7" class="checklist-label">
-                            <strong>Mettre en place des alertes automatiques</strong>
-                            <p>Configurer des notifications si le taux d'échec SPF/DKIM dépasse un seuil (ex: 5%)</p>
-                        </label>
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="general8" class="checklist-checkbox">
-                        <label for="general8" class="checklist-label">
-                            <strong>Préparer un plan de réponse aux incidents</strong>
-                            <p>Savoir quoi faire si des emails légitimes sont rejetés ou si une usurpation est détectée</p>
+                        <input type="checkbox" id="team5" class="checklist-checkbox">
+                        <label for="team5" class="checklist-label">
+                            <strong>Demander une vérification AVANT la mise en production</strong>
+                            <p>Ne jamais déployer une fonctionnalité email sans avoir vérifié les protections du domaine</p>
                         </label>
                     </div>
                 </div>
@@ -1070,28 +1176,41 @@
 
             <div class="alert alert-info" style="margin-top: 2rem;">
                 <strong>💾 Astuce :</strong>
-                Vous pouvez imprimer cette page ou l'utiliser comme référence lors de vos audits de sécurité email. Les checkbox sont interactives et persistent dans votre session navigateur !
+                Cette checklist est interactive ! Cochez les cases au fur et à mesure de votre progression. Votre avancement est sauvegardé automatiquement dans votre navigateur.
             </div>
 
             <div class="cards-grid" style="margin-top: 2rem;">
                 <div class="card card-primary">
-                    <h4>🔧 Outils recommandés</h4>
+                    <h4>🔧 Outils à connaître (débutant)</h4>
                     <ul>
-                        <li><strong>MXToolbox.com</strong> - Vérification complète</li>
-                        <li><strong>Mail-tester.com</strong> - Test qualité email</li>
-                        <li><strong>DMARC Analyzer</strong> - Analyse rapports</li>
-                        <li><strong>Kitterman SPF Validator</strong> - Test SPF</li>
+                        <li><strong>MXToolbox.com</strong> - Outil gratuit pour vérifier SPF/DKIM/DMARC</li>
+                        <li><strong>Mail-tester.com</strong> - Tester la qualité d'un email (score sur 10)</li>
+                        <li><strong>Google Admin Toolbox</strong> - Vérifications diverses</li>
                     </ul>
                 </div>
                 <div class="card card-secondary">
-                    <h4>📚 Ressources utiles</h4>
+                    <h4>💡 Rappel des concepts clés</h4>
                     <ul>
-                        <li>RFC 7208 (SPF)</li>
-                        <li>RFC 6376 (DKIM)</li>
-                        <li>RFC 7489 (DMARC)</li>
-                        <li>Documentation fournisseurs email</li>
+                        <li><strong>SPF</strong> = Qui peut envoyer ?</li>
+                        <li><strong>DKIM</strong> = Signature authentique ?</li>
+                        <li><strong>DMARC</strong> = Que faire si échec ?</li>
+                        <li><strong>Les 3 ensemble</strong> = Protection complète</li>
                     </ul>
                 </div>
+                <div class="card card-accent">
+                    <h4>🎯 Prochaines étapes</h4>
+                    <ul>
+                        <li>Pratiquer avec MXToolbox sur différents domaines</li>
+                        <li>Tester un envoi d'email avec mail-tester.com</li>
+                        <li>Comprendre les rapports de ces outils</li>
+                        <li>Partager vos découvertes avec l'équipe</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-warning" style="margin-top: 2rem;">
+                <strong>⚡ Important à retenir :</strong>
+                En tant que développeur web en entreprise, vous n'êtes généralement pas responsable de la configuration technique de SPF/DKIM/DMARC, mais vous DEVEZ comprendre leur importance et savoir vérifier qu'ils sont en place. C'est votre rôle de signaler un problème et de communiquer avec l'admin système !
             </div>
         </section>
 
