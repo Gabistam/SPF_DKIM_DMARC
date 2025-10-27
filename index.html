@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPF/DKIM/DMARC - Protection Email d'Organisation | BTS SIO SLAM</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation fixe -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-title">🛡️ SPF/DKIM/DMARC - Protection Email</div>
+            <ul class="nav-links">
+                <li><a href="#intro" class="nav-link">📜 Introduction</a></li>
+                <li><a href="#objectifs" class="nav-link">🎯 Objectifs</a></li>
+                <li><a href="#probleme" class="nav-link">⚠️ Le Problème</a></li>
+                <li><a href="#spf" class="nav-link">🔐 SPF</a></li>
+                <li><a href="#protections" class="nav-link">🛡️ DKIM/DMARC</a></li>
+                <li><a href="#verification" class="nav-link">🔍 Vérification</a></li>
+                <li><a href="#synthese" class="nav-link">📚 Synthèse</a></li>
+                <li><a href="#checklist" class="nav-link">✅ Checklist</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+
+        <!-- Section Introduction avec Timeline -->
+        <section id="intro" class="section">
+            <h2 class="section-title">📜 Introduction - Histoire de la sécurité email</h2>
+
+            <div class="alert alert-info">
+                <strong>💡 Pourquoi cette introduction ?</strong>
+                Avant de plonger dans les détails techniques, comprenons l'évolution de la sécurité email et pourquoi SPF, DKIM et DMARC sont devenus essentiels.
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-danger"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1971</div>
+                        <h4>📧 Naissance de l'email</h4>
+                        <p>Ray Tomlinson envoie le premier email. Le protocole SMTP est créé mais <strong>sans aucune sécurité</strong> : n'importe qui peut usurper l'identité de l'expéditeur.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-danger"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">1990-2000</div>
+                        <h4>⚠️ L'ère du spam et du phishing</h4>
+                        <p>Explosion du spam et des emails frauduleux. Les entreprises réalisent qu'il est trop facile d'envoyer des emails au nom de quelqu'un d'autre. Le besoin de protection se fait sentir.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-warning"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2003</div>
+                        <h4>🔐 Arrivée de SPF</h4>
+                        <p><strong>Sender Policy Framework</strong> est publié. Première protection permettant de déclarer publiquement quels serveurs sont autorisés à envoyer des emails pour un domaine.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-warning"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2004</div>
+                        <h4>✍️ Introduction de DKIM</h4>
+                        <p><strong>DomainKeys Identified Mail</strong> est développé. Ajout de signatures cryptographiques pour prouver qu'un email n'a pas été modifié et vient bien de l'expéditeur légitime.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-success"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2012</div>
+                        <h4>📋 Standardisation de DMARC</h4>
+                        <p><strong>Domain-based Message Authentication</strong> est publié. Coordination entre SPF et DKIM avec des politiques claires sur que faire en cas d'échec de vérification.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-success"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2015-2020</div>
+                        <h4>🚀 Adoption massive</h4>
+                        <p>Les grandes entreprises (Google, Microsoft, Facebook) rendent obligatoire l'utilisation de SPF/DKIM/DMARC. Les emails sans ces protections risquent le spam.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker marker-primary"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Aujourd'hui</div>
+                        <h4>🛡️ Standard incontournable</h4>
+                        <p>SPF/DKIM/DMARC sont devenus des <strong>standards obligatoires</strong> pour toute organisation sérieuse. Sans ces protections, vos emails ont peu de chances d'arriver en boîte de réception.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards-grid" style="margin-top: 2rem;">
+                <div class="card card-primary">
+                    <h4>🎯 Pourquoi c'est important ?</h4>
+                    <ul>
+                        <li>Protection de l'identité numérique</li>
+                        <li>Lutte contre le phishing et le spam</li>
+                        <li>Confiance des utilisateurs</li>
+                        <li>Délivrabilité des emails</li>
+                    </ul>
+                </div>
+                <div class="card card-secondary">
+                    <h4>💼 Impact business</h4>
+                    <ul>
+                        <li>Réputation de la marque protégée</li>
+                        <li>Emails critiques bien reçus</li>
+                        <li>Réduction des fraudes</li>
+                        <li>Conformité aux standards</li>
+                    </ul>
+                </div>
+                <div class="card card-accent">
+                    <h4>👨‍💻 Pour les développeurs</h4>
+                    <ul>
+                        <li>Applications web fonctionnelles</li>
+                        <li>Emails de confirmation reçus</li>
+                        <li>Meilleure expérience utilisateur</li>
+                        <li>Compétence professionnelle clé</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Objectifs -->
+        <section id="objectifs" class="section">
+            <h2 class="section-title">🎯 Objectifs d'apprentissage</h2>
+            
+            <div class="cards-grid">
+                <div class="card card-primary">
+                    <h4>🎭 Comprendre les faux emails</h4>
+                    <p>Expliquer pourquoi les emails peuvent être "faux" et l'impact sur une entreprise</p>
+                </div>
+                <div class="card card-secondary">
+                    <h4>🛡️ Identifier les protections</h4>
+                    <p>Identifier les 3 protections de base (SPF/DKIM/DMARC) et leur rôle simple</p>
+                </div>
+                <div class="card card-accent">
+                    <h4>🔍 Vérifier en pratique</h4>
+                    <p>Vérifier si un site web a ces protections avec des outils en ligne faciles</p>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>💡 Pourquoi ce cours ?</strong>
+                En tant que futur développeur web, vous créerez des applications qui envoient des emails (confirmations, mots de passe oubliés...). Si ces emails finissent en spam, vos utilisateurs ne les recevront pas ! Ce cours vous explique les protections de base à connaître.
+            </div>
+        </section>
+
+        <!-- Chapitre 1 : Le problème -->
+        <section id="probleme" class="section">
+            <h2 class="section-title">⚠️ Chapitre 1 - Le problème : Les faux emails</h2>
+            
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    🎭 Qu'est-ce qu'un email "faux" ?
+                </div>
+                <div class="dropdown-content">
+                    <p>Un email "faux" (ou "usurpé") est un email qui prétend venir d'une personne ou d'une entreprise, mais qui en réalité vient de quelqu'un d'autre.</p>
+                    
+                    <div class="cards-grid">
+                        <div class="card card-secondary">
+                            <h4>✅ Email authentique</h4>
+                            <ul>
+                                <li>Vient vraiment de votre banque</li>
+                                <li>Envoyé depuis leurs serveurs officiels</li>
+                                <li>Contenu légitime et sécurisé</li>
+                            </ul>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>❌ Email usurpé</h4>
+                            <ul>
+                                <li>Prétend venir de votre banque</li>
+                                <li>Envoyé par un pirate depuis ailleurs</li>
+                                <li>Contenu malveillant (vol de données)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>🔍 Analogie simple :</strong>
+                        Imaginez quelqu'un qui se présente avec une fausse carte d'identité. Sur internet, c'est pareil : on peut facilement mentir sur qui envoie un email !
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    💼 Impact sur une entreprise
+                </div>
+                <div class="dropdown-content">
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; flex-direction: column; items-center; gap: 1rem;">
+                            <div style="text-align: center; padding: 1rem; background: var(--bg-light); border-radius: 8px;">
+                                <div style="font-size: 2rem;">🏢</div>
+                                <div><strong>Entreprise légitime</strong></div>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">Réputation en danger</div>
+                            </div>
+                            <div style="text-align: center; color: var(--danger-color); font-size: 1.5rem;">↓</div>
+                            <div style="text-align: center; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px;">
+                                <div style="font-size: 2rem;">🎭</div>
+                                <div><strong>Emails usurpés</strong></div>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">Attaques au nom de l'entreprise</div>
+                            </div>
+                            <div style="text-align: center; color: var(--danger-color); font-size: 1.5rem;">↓</div>
+                            <div style="text-align: center; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px;">
+                                <div style="font-size: 2rem;">😟</div>
+                                <div><strong>Clients méfiants</strong></div>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">Plus de confiance</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>💡 Exemple concret :</strong>
+                        Si des pirates envoient de faux emails "de votre banque" pour voler des mots de passe, les vrais clients vont se méfier de TOUS les emails de cette banque, même les vrais !
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    👨‍💻 Impact pour les développeurs web
+                </div>
+                <div class="dropdown-content">
+                    <p>Quand vous développez une application web, elle doit souvent envoyer des emails :</p>
+                    
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h4>📧 Types d'emails d'application</h4>
+                            <ul>
+                                <li>Email de confirmation d'inscription</li>
+                                <li>Email de mot de passe oublié</li>
+                                <li>Notifications importantes</li>
+                                <li>Newsletter ou promotions</li>
+                            </ul>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>⚠️ Problème sans protection</h4>
+                            <ul>
+                                <li>Emails classés comme SPAM</li>
+                                <li>Utilisateurs ne reçoivent rien</li>
+                                <li>Fonctionnalités cassées</li>
+                                <li>Mauvaise expérience utilisateur</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>⚡ Erreur fréquente :</strong>
+                        Beaucoup de débutants pensent qu'envoyer un email depuis leur code suffit. En réalité, sans les bonnes protections, ces emails ont de fortes chances de finir en spam !
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz 1 -->
+            <div class="quiz-container" id="quiz1">
+                <h3>🧠 Quiz 1 - Le problème et l'impact</h3>
+                <div class="quiz-question">
+                    <p>Question <span id="quiz1-current">1</span>/5</p>
+                    <div id="quiz1-question-text"></div>
+                </div>
+                <div class="quiz-answers" id="quiz1-answers"></div>
+                <button class="quiz-btn" id="quiz1-btn" onclick="handleQuizAction(1)">Valider</button>
+                <div class="quiz-result" id="quiz1-result" style="display: none;"></div>
+                <div style="margin-top: 1rem;">
+                    <div style="background: var(--bg-light); height: 8px; border-radius: 4px;">
+                        <div id="quiz1-progress" style="background: var(--gradient-primary); height: 100%; border-radius: 4px; width: 20%; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapitre 2 : SPF -->
+        <section id="spf" class="section">
+            <h2 class="section-title">🔐 Chapitre 2 - SPF : La liste des "serveurs autorisés"</h2>
+            
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    📋 Le principe simple de SPF
+                </div>
+                <div class="dropdown-content">
+                    <div class="alert alert-info">
+                        <strong>💡 SPF = Sender Policy Framework</strong>
+                        SPF permet de dire publiquement : "Voici la liste des serveurs qui ont le droit d'envoyer des emails au nom de mon domaine"
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0;">
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-light); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                            <div style="font-size: 2rem;">🏢</div>
+                            <div><strong>mon-entreprise.com</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Mon domaine</div>
+                        </div>
+                        <div style="text-align: center; color: var(--primary-color); font-size: 1.5rem;">↓</div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.5rem;">📋</div>
+                            <div><strong>Liste SPF publique</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">"Seuls ces serveurs peuvent envoyer pour nous"</div>
+                        </div>
+                        <div style="text-align: center; color: var(--primary-color); font-size: 1.5rem;">↓</div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.5rem;">✅</div>
+                            <div><strong>Emails acceptés</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Si envoyés depuis serveurs autorisés</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>🏗️ Analogie :</strong>
+                        C'est comme la liste des livreurs autorisés à l'accueil d'une entreprise. Seuls ceux sur la liste peuvent "livrer" (envoyer des emails) au nom de l'entreprise.
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    🌐 Où c'est écrit ? (DNS)
+                </div>
+                <div class="dropdown-content">
+                    <p>La liste SPF est écrite dans le <strong>DNS</strong> (Domain Name System), comme un annuaire public que tout le monde peut consulter.</p>
+
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <h4>🔍 Qu'est-ce que le DNS ?</h4>
+                            <ul>
+                                <li>Annuaire public d'internet</li>
+                                <li>Traduit google.com en adresse IP</li>
+                                <li>Stocke aussi d'autres infos publiques</li>
+                                <li>SPF = une info publique de sécurité</li>
+                            </ul>
+                        </div>
+                        <div class="card card-secondary">
+                            <h4>📝 Exemple simple</h4>
+                            <ul>
+                                <li>Domaine : facebook.com</li>
+                                <li>SPF : "Seuls nos serveurs à nous"</li>
+                                <li>Résultat : Autres serveurs = suspect</li>
+                                <li>Protection : Faux emails détectés</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>🤓 Détail technique (pas besoin de retenir) :</strong>
+                        SPF est stocké dans un "enregistrement TXT" du DNS. Par exemple : <code>"v=spf1 include:_spf.google.com ~all"</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    ⚠️ Que se passe-t-il sans SPF ?
+                </div>
+                <div class="dropdown-content">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h4>❌ Sans protection SPF</h4>
+                            <ul>
+                                <li>N'importe qui peut envoyer "à votre nom"</li>
+                                <li>Serveurs email ne savent pas quoi faire</li>
+                                <li>Risque de spam et d'usurpation élevé</li>
+                                <li>Réputation du domaine dégradée</li>
+                            </ul>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>✅ Avec protection SPF</h4>
+                            <ul>
+                                <li>Liste claire des serveurs autorisés</li>
+                                <li>Serveurs email peuvent vérifier</li>
+                                <li>Emails suspects détectés automatiquement</li>
+                                <li>Réputation du domaine protégée</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>⚡ Erreur fréquente de débutant :</strong>
+                        Penser que SPF est automatique. En réalité, chaque propriétaire de domaine doit configurer SPF, sinon il n'y a aucune protection !
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz 2 -->
+            <div class="quiz-container" id="quiz2">
+                <h3>🧠 Quiz 2 - SPF et protection de base</h3>
+                <div class="quiz-question">
+                    <p>Question <span id="quiz2-current">1</span>/5</p>
+                    <div id="quiz2-question-text"></div>
+                </div>
+                <div class="quiz-answers" id="quiz2-answers"></div>
+                <button class="quiz-btn" id="quiz2-btn" onclick="handleQuizAction(2)">Valider</button>
+                <div class="quiz-result" id="quiz2-result" style="display: none;"></div>
+                <div style="margin-top: 1rem;">
+                    <div style="background: var(--bg-light); height: 8px; border-radius: 4px;">
+                        <div id="quiz2-progress" style="background: var(--gradient-primary); height: 100%; border-radius: 4px; width: 20%; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapitre 3 : DKIM et DMARC -->
+        <section id="protections" class="section">
+            <h2 class="section-title">🛡️ Chapitre 3 - DKIM et DMARC : Les autres protections</h2>
+            
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    ✍️ DKIM : La signature électronique
+                </div>
+                <div class="dropdown-content">
+                    <div class="alert alert-info">
+                        <strong>💡 DKIM = DomainKeys Identified Mail</strong>
+                        DKIM permet de "signer" chaque email envoyé, comme signer un chèque ou un contrat important.
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0;">
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-light); border-radius: 8px; border-left: 4px solid var(--secondary-color);">
+                            <div style="font-size: 2rem;">📧</div>
+                            <div><strong>Email envoyé</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Contenu + signature DKIM</div>
+                        </div>
+                        <div style="text-align: center; color: var(--secondary-color); font-size: 1.5rem;">↓</div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.5rem;">🔍</div>
+                            <div><strong>Vérification signature</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Le destinataire vérifie si c'est authentique</div>
+                        </div>
+                        <div style="text-align: center; color: var(--secondary-color); font-size: 1.5rem;">↓</div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.5rem;">✅</div>
+                            <div><strong>Email authentifié</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Signature valide = email légitime</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>✍️ Analogie :</strong>
+                        Comme votre signature manuscrite sur un chèque. Si quelqu'un essaie de copier votre signature, la banque peut voir que c'est un faux !
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    📋 DMARC : Le "règlement de sécurité"
+                </div>
+                <div class="dropdown-content">
+                    <div class="alert alert-info">
+                        <strong>💡 DMARC = Domain-based Message Authentication</strong>
+                        DMARC établit les règles : "Que faire si SPF OU DKIM échouent ?"
+                    </div>
+
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <h4>🎯 Rôle de DMARC</h4>
+                            <ul>
+                                <li>Coordonne SPF + DKIM</li>
+                                <li>Définit la politique de sécurité</li>
+                                <li>Dit quoi faire en cas d'échec</li>
+                                <li>Génère des rapports de surveillance</li>
+                            </ul>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>⚙️ Options DMARC simples</h4>
+                            <ul>
+                                <li><strong>Aucune action</strong> : Juste surveiller</li>
+                                <li><strong>Quarantaine</strong> : Mettre en spam</li>
+                                <li><strong>Rejeter</strong> : Bloquer complètement</li>
+                                <li><strong>Rapports</strong> : Recevoir des statistiques</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>🏛️ Analogie :</strong>
+                        DMARC = le chef de sécurité qui applique les règles. Il vérifie la "carte grise" (SPF) ET la "signature" (DKIM), puis décide selon le règlement établi.
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    🔗 Pourquoi les 3 ensemble ?
+                </div>
+                <div class="dropdown-content">
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0;">
+                        <div style="text-align: center; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.5rem;">🔐</div>
+                            <div><strong>SPF</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Qui peut envoyer ?</div>
+                        </div>
+                        <div style="text-align: center; color: var(--primary-color); font-size: 1.2rem;">+</div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.5rem;">✍️</div>
+                            <div><strong>DKIM</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Signature authentique ?</div>
+                        </div>
+                        <div style="text-align: center; color: var(--primary-color); font-size: 1.2rem;">+</div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(245, 158, 11, 0.1); border-radius: 8px;">
+                            <div style="font-size: 1.5rem;">📋</div>
+                            <div><strong>DMARC</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Que faire si échec ?</div>
+                        </div>
+                        <div style="text-align: center; color: var(--secondary-color); font-size: 1.5rem;">↓</div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.2); border-radius: 8px; border: 2px solid var(--secondary-color);">
+                            <div style="font-size: 2rem;">🛡️</div>
+                            <div><strong>Protection complète</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Sécurité multicouche</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success">
+                        <strong>🏦 Analogie bancaire :</strong>
+                        Comme la sécurité d'une banque : Badge d'accès (SPF) + Code secret (DKIM) + Caméras de surveillance (DMARC). Une seule protection ne suffit pas !
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>⚡ Erreur fréquente :</strong>
+                        Penser qu'une seule protection (ex: juste SPF) suffit. En réalité, les attaquants peuvent contourner une protection unique, d'où l'importance du trio complet.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz 3 -->
+            <div class="quiz-container" id="quiz3">
+                <h3>🧠 Quiz 3 - Les 3 protections ensemble</h3>
+                <div class="quiz-question">
+                    <p>Question <span id="quiz3-current">1</span>/5</p>
+                    <div id="quiz3-question-text"></div>
+                </div>
+                <div class="quiz-answers" id="quiz3-answers"></div>
+                <button class="quiz-btn" id="quiz3-btn" onclick="handleQuizAction(3)">Valider</button>
+                <div class="quiz-result" id="quiz3-result" style="display: none;"></div>
+                <div style="margin-top: 1rem;">
+                    <div style="background: var(--bg-light); height: 8px; border-radius: 4px;">
+                        <div id="quiz3-progress" style="background: var(--gradient-primary); height: 100%; border-radius: 4px; width: 20%; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapitre 4 : Vérification -->
+        <section id="verification" class="section">
+            <h2 class="section-title">🔍 Chapitre 4 - Vérifier et comprendre l'impact</h2>
+            
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    🌐 Sites web pour vérifier facilement
+                </div>
+                <div class="dropdown-content">
+                    <p>Pas besoin d'être expert technique ! Il existe des sites gratuits pour vérifier si un domaine a les protections SPF/DKIM/DMARC.</p>
+
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <h4>🔧 MXToolbox.com</h4>
+                            <ul>
+                                <li>Site gratuit le plus populaire</li>
+                                <li>Tape un domaine → Voir toutes ses protections</li>
+                                <li>Interface simple et colorée</li>
+                                <li>Explications claires des résultats</li>
+                            </ul>
+                        </div>
+                        <div class="card card-secondary">
+                            <h4>📧 Mail-tester.com</h4>
+                            <ul>
+                                <li>Teste la "qualité" d'un email</li>
+                                <li>Score sur 10 (plus c'est haut, mieux c'est)</li>
+                                <li>Montre les problèmes de délivrabilité</li>
+                                <li>Idéal pour tester vos apps web</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>🎯 Exercice pratique :</strong>
+                        Allez sur mxtoolbox.com et tapez "google.com" dans la recherche. Vous verrez que Google a une protection complète SPF/DKIM/DMARC !
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    ✅ Exemples avec de vrais sites
+                </div>
+                <div class="dropdown-content">
+                    <div class="cards-grid">
+                        <div class="card card-secondary">
+                            <h4>✅ Sites bien protégés</h4>
+                            <ul>
+                                <li><strong>google.com</strong> : Protection complète</li>
+                                <li><strong>facebook.com</strong> : SPF + DKIM + DMARC</li>
+                                <li><strong>microsoft.com</strong> : Sécurité renforcée</li>
+                                <li><strong>banques.fr</strong> : Protection obligatoire</li>
+                            </ul>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>⚠️ Sites peu protégés</h4>
+                            <ul>
+                                <li>Petites entreprises locales</li>
+                                <li>Sites personnels basiques</li>
+                                <li>Anciens sites non mis à jour</li>
+                                <li>Blogs amateurs</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>🔍 Observation intéressante :</strong>
+                        Les grosses entreprises (Google, Microsoft, banques) ont TOUJOURS ces protections. Les petits sites souvent pas. Devinez pourquoi ? 😉
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    👨‍💻 Impact sur vos futures applications web
+                </div>
+                <div class="dropdown-content">
+                    <div style="display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0;">
+                        <div style="text-align: center; padding: 1rem; background: var(--bg-light); border-radius: 8px;">
+                            <div style="font-size: 2rem;">📱</div>
+                            <div><strong>Votre app web</strong></div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Envoie emails de confirmation</div>
+                        </div>
+                        <div style="text-align: center; color: var(--accent-color); font-size: 1.5rem;">↓</div>
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <div style="text-align: center; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; flex: 1; max-width: 200px;">
+                                <div style="font-size: 1.5rem;">❌</div>
+                                <div><strong>Sans protection</strong></div>
+                                <div style="font-size: 0.8rem; color: var(--text-light);">→ Emails en SPAM</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; flex: 1; max-width: 200px;">
+                                <div style="font-size: 1.5rem;">✅</div>
+                                <div><strong>Avec protection</strong></div>
+                                <div style="font-size: 0.8rem; color: var(--text-light);">→ Emails reçus</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; color: var(--accent-color); font-size: 1.5rem;">↓</div>
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <div style="text-align: center; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; flex: 1; max-width: 200px;">
+                                <div style="font-size: 1.5rem;">😠</div>
+                                <div><strong>Utilisateurs frustrés</strong></div>
+                                <div style="font-size: 0.8rem; color: var(--text-light);">Ne peuvent pas confirmer</div>
+                            </div>
+                            <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px; flex: 1; max-width: 200px;">
+                                <div style="font-size: 1.5rem;">😊</div>
+                                <div><strong>Utilisateurs contents</strong></div>
+                                <div style="font-size: 0.8rem; color: var(--text-light);">Tout fonctionne</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success">
+                        <strong>💡 Conseil de pro :</strong>
+                        Quand vous développez, toujours tester l'envoi d'emails sur un vrai domaine avec les bonnes protections. Sinon, surprise en production !
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    👥 Qui s'occupe de quoi ?
+                </div>
+                <div class="dropdown-content">
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <h4>🔧 Administrateur système</h4>
+                            <ul>
+                                <li>Configure SPF/DKIM/DMARC dans le DNS</li>
+                                <li>Gère les serveurs email</li>
+                                <li>Surveille les rapports DMARC</li>
+                                <li>Maintient la sécurité technique</li>
+                            </ul>
+                        </div>
+                        <div class="card card-secondary">
+                            <h4>👨‍💻 Développeur web (vous !)</h4>
+                            <ul>
+                                <li>Comprend pourquoi c'est important</li>
+                                <li>Code les emails avec les bonnes pratiques</li>
+                                <li>Teste la délivrabilité des emails</li>
+                                <li>Communique avec l'admin si problème</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>🤝 Travail d'équipe :</strong>
+                        Vous n'avez pas besoin de tout configurer vous-même, mais vous devez <strong>comprendre l'impact</strong> sur vos applications et <strong>savoir diagnostiquer</strong> si un problème vient de là !
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>⚡ Erreur fréquente :</strong>
+                        Dire "ce n'est pas mon problème" quand les emails de l'app ne passent pas. Un bon développeur comprend toute la chaîne !
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz 4 -->
+            <div class="quiz-container" id="quiz4">
+                <h3>🧠 Quiz 4 - Vérification pratique</h3>
+                <div class="quiz-question">
+                    <p>Question <span id="quiz4-current">1</span>/5</p>
+                    <div id="quiz4-question-text"></div>
+                </div>
+                <div class="quiz-answers" id="quiz4-answers"></div>
+                <button class="quiz-btn" id="quiz4-btn" onclick="handleQuizAction(4)">Valider</button>
+                <div class="quiz-result" id="quiz4-result" style="display: none;"></div>
+                <div style="margin-top: 1rem;">
+                    <div style="background: var(--bg-light); height: 8px; border-radius: 4px;">
+                        <div id="quiz4-progress" style="background: var(--gradient-primary); height: 100%; border-radius: 4px; width: 20%; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Synthèse -->
+        <section id="synthese" class="section">
+            <h2 class="section-title">📚 Synthèse - Points clés à retenir</h2>
+            
+            <div class="cards-grid">
+                <div class="card card-gradient">
+                    <h4>🛡️ Les 3 protections email</h4>
+                    <ul>
+                        <li><strong>SPF</strong> : Qui peut envoyer ?</li>
+                        <li><strong>DKIM</strong> : Signature authentique ?</li>
+                        <li><strong>DMARC</strong> : Que faire si échec ?</li>
+                        <li>Les 3 ensemble = protection complète</li>
+                    </ul>
+                </div>
+                <div class="card card-primary">
+                    <h4>👨‍💻 Pourquoi c'est important pour vous</h4>
+                    <ul>
+                        <li>Applications web = envoi d'emails</li>
+                        <li>Sans protection = emails en spam</li>
+                        <li>Avec protection = fonctionnalités qui marchent</li>
+                        <li>Utilisateurs contents = mission réussie</li>
+                    </ul>
+                </div>
+                <div class="card card-secondary">
+                    <h4>🔍 Comment vérifier</h4>
+                    <ul>
+                        <li>MXToolbox.com = outil gratuit</li>
+                        <li>Mail-tester.com = score qualité email</li>
+                        <li>Tester avec vrais domaines</li>
+                        <li>Google.com = exemple parfait</li>
+                    </ul>
+                </div>
+                <div class="card card-accent">
+                    <h4>👥 Qui fait quoi</h4>
+                    <ul>
+                        <li>Admin = configure les protections</li>
+                        <li>Dev = comprend l'impact</li>
+                        <li>Collaboration = clé du succès</li>
+                        <li>Communication = résolution problèmes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <strong>🎯 Mission accomplie !</strong>
+                Vous savez maintenant pourquoi SPF/DKIM/DMARC existent, comment ils protègent l'identité numérique d'une organisation, et pourquoi c'est crucial pour vos futures applications web !
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-title">
+                    🚀 Ressources pour aller plus loin
+                </div>
+                <div class="dropdown-content">
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <h4>🔧 Outils gratuits</h4>
+                            <ul>
+                                <li><strong>MXToolbox.com</strong> : Vérification complète</li>
+                                <li><strong>Mail-tester.com</strong> : Test qualité email</li>
+                                <li><strong>DMARC Analyzer</strong> : Analyses avancées</li>
+                                <li><strong>Google Admin Console</strong> : Si domaine Google</li>
+                            </ul>
+                        </div>
+                        <div class="card card-secondary">
+                            <h4>📚 Documentation simple</h4>
+                            <ul>
+                                <li>Guides OVH sur configuration email</li>
+                                <li>Documentation Gandi DNS/Email</li>
+                                <li>Tutorials Cloudflare sécurité</li>
+                                <li>Articles blog développement web</li>
+                            </ul>
+                        </div>
+                        <div class="card card-accent">
+                            <h4>🎓 Pour plus tard (quand expérimentés)</h4>
+                            <ul>
+                                <li>Formations cybersécurité web</li>
+                                <li>Certifications sécurité (Security+)</li>
+                                <li>Cours administration système</li>
+                                <li>Spécialisation DevSecOps</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>📖 Veille et communauté</h4>
+                            <ul>
+                                <li>Blogs : OpenClassrooms, Alsacreations</li>
+                                <li>Forums : Stack Overflow, Reddit webdev</li>
+                                <li>News : Journal du Net, Clubic Pro</li>
+                                <li>Réseaux : LinkedIn groupes dev/sécu</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz final récapitulatif -->
+            <div class="quiz-container" id="quiz5">
+                <h3>🏆 Quiz final - Récapitulatif général</h3>
+                <div class="quiz-question">
+                    <p>Question <span id="quiz5-current">1</span>/5</p>
+                    <div id="quiz5-question-text"></div>
+                </div>
+                <div class="quiz-answers" id="quiz5-answers"></div>
+                <button class="quiz-btn" id="quiz5-btn" onclick="handleQuizAction(5)">Valider</button>
+                <div class="quiz-result" id="quiz5-result" style="display: none;"></div>
+                <div style="margin-top: 1rem;">
+                    <div style="background: var(--bg-light); height: 8px; border-radius: 4px;">
+                        <div id="quiz5-progress" style="background: var(--gradient-primary); height: 100%; border-radius: 4px; width: 20%; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Checklist des bonnes pratiques -->
+        <section id="checklist" class="section">
+            <h2 class="section-title">✅ Checklist - Bonnes pratiques à appliquer</h2>
+
+            <div class="alert alert-success">
+                <strong>🎯 Guide pratique :</strong>
+                Utilisez cette checklist comme référence lors de la mise en place ou de la vérification de la sécurité email d'un domaine.
+            </div>
+
+            <!-- Checklist SPF -->
+            <div class="checklist-category">
+                <div class="checklist-header header-primary">
+                    <h3>🔐 SPF - Sender Policy Framework</h3>
+                </div>
+                <div class="checklist-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="spf1" class="checklist-checkbox">
+                        <label for="spf1" class="checklist-label">
+                            <strong>Créer un enregistrement SPF dans le DNS</strong>
+                            <p>Ajouter un enregistrement TXT dans la zone DNS de votre domaine (ex: v=spf1 include:_spf.google.com ~all)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="spf2" class="checklist-checkbox">
+                        <label for="spf2" class="checklist-label">
+                            <strong>Lister TOUS les serveurs autorisés</strong>
+                            <p>Inclure tous les services qui envoient des emails pour vous (Google, Mailchimp, Sendinblue, serveurs internes...)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="spf3" class="checklist-checkbox">
+                        <label for="spf3" class="checklist-label">
+                            <strong>Limiter le nombre de lookups DNS</strong>
+                            <p>Maximum 10 lookups DNS autorisés. Utiliser des mécanismes compacts pour éviter de dépasser cette limite</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="spf4" class="checklist-checkbox">
+                        <label for="spf4" class="checklist-label">
+                            <strong>Choisir la bonne politique de fin (-all, ~all, ?all)</strong>
+                            <p>-all = strict (rejet), ~all = souple (soft fail recommandé), ?all = neutre</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="spf5" class="checklist-checkbox">
+                        <label for="spf5" class="checklist-label">
+                            <strong>Tester l'enregistrement SPF avec des outils</strong>
+                            <p>Utiliser MXToolbox, Kitterman SPF Validator ou Google Admin Toolbox pour valider la syntaxe</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="spf6" class="checklist-checkbox">
+                        <label for="spf6" class="checklist-label">
+                            <strong>Maintenir à jour la liste des serveurs</strong>
+                            <p>Réviser régulièrement (tous les 6 mois) et retirer les anciens services non utilisés</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist DKIM -->
+            <div class="checklist-category">
+                <div class="checklist-header header-secondary">
+                    <h3>✍️ DKIM - DomainKeys Identified Mail</h3>
+                </div>
+                <div class="checklist-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dkim1" class="checklist-checkbox">
+                        <label for="dkim1" class="checklist-label">
+                            <strong>Générer une paire de clés cryptographiques (publique/privée)</strong>
+                            <p>Utiliser une taille de clé de 2048 bits minimum pour la sécurité (4096 bits recommandé)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dkim2" class="checklist-checkbox">
+                        <label for="dkim2" class="checklist-label">
+                            <strong>Publier la clé publique dans le DNS</strong>
+                            <p>Créer un enregistrement TXT avec le sélecteur (ex: selector._domainkey.votredomaine.com)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dkim3" class="checklist-checkbox">
+                        <label for="dkim3" class="checklist-label">
+                            <strong>Configurer le serveur email pour signer avec DKIM</strong>
+                            <p>Installer la clé privée sur votre serveur mail et activer la signature automatique des emails sortants</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dkim4" class="checklist-checkbox">
+                        <label for="dkim4" class="checklist-label">
+                            <strong>Utiliser des sélecteurs multiples si nécessaire</strong>
+                            <p>Créer plusieurs sélecteurs DKIM pour différents services (ex: google._domainkey, newsletter._domainkey)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dkim5" class="checklist-checkbox">
+                        <label for="dkim5" class="checklist-label">
+                            <strong>Tester la signature DKIM</strong>
+                            <p>Envoyer un email de test à mail-tester.com ou check-auth@verifier.port25.com</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dkim6" class="checklist-checkbox">
+                        <label for="dkim6" class="checklist-label">
+                            <strong>Planifier une rotation des clés</strong>
+                            <p>Renouveler les clés DKIM tous les 1-2 ans pour maintenir la sécurité</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist DMARC -->
+            <div class="checklist-category">
+                <div class="checklist-header header-accent">
+                    <h3>📋 DMARC - Domain-based Message Authentication</h3>
+                </div>
+                <div class="checklist-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmarc1" class="checklist-checkbox">
+                        <label for="dmarc1" class="checklist-label">
+                            <strong>Commencer avec une politique "none" (surveillance)</strong>
+                            <p>Débuter avec p=none pour collecter des rapports sans impacter la délivrabilité</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmarc2" class="checklist-checkbox">
+                        <label for="dmarc2" class="checklist-label">
+                            <strong>Créer l'enregistrement DMARC dans le DNS</strong>
+                            <p>Ajouter un TXT sur _dmarc.votredomaine.com (ex: v=DMARC1; p=none; rua=mailto:dmarc@votredomaine.com)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmarc3" class="checklist-checkbox">
+                        <label for="dmarc3" class="checklist-label">
+                            <strong>Configurer les adresses de rapports (rua et ruf)</strong>
+                            <p>rua = rapports agrégés quotidiens, ruf = rapports forensiques détaillés (optionnel)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmarc4" class="checklist-checkbox">
+                        <label for="dmarc4" class="checklist-label">
+                            <strong>Analyser les rapports DMARC régulièrement</strong>
+                            <p>Utiliser des outils comme DMARC Analyzer, Postmark ou dmarcian pour interpréter les rapports</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmarc5" class="checklist-checkbox">
+                        <label for="dmarc5" class="checklist-label">
+                            <strong>Passer progressivement à "quarantine" puis "reject"</strong>
+                            <p>Après 2-4 semaines de surveillance, augmenter la strictness : p=quarantine puis p=reject</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmarc6" class="checklist-checkbox">
+                        <label for="dmarc6" class="checklist-label">
+                            <strong>Définir le pourcentage d'application (pct)</strong>
+                            <p>Commencer avec pct=10 (10% des emails) puis augmenter progressivement jusqu'à 100%</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="dmarc7" class="checklist-checkbox">
+                        <label for="dmarc7" class="checklist-label">
+                            <strong>Appliquer DMARC aux sous-domaines</strong>
+                            <p>Utiliser la balise sp= pour définir la politique des sous-domaines (ex: sp=reject)</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist Bonnes pratiques générales -->
+            <div class="checklist-category">
+                <div class="checklist-header header-gradient">
+                    <h3>🛡️ Bonnes pratiques générales</h3>
+                </div>
+                <div class="checklist-content">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general1" class="checklist-checkbox">
+                        <label for="general1" class="checklist-label">
+                            <strong>Implémenter les 3 protocoles ensemble (SPF + DKIM + DMARC)</strong>
+                            <p>La protection complète nécessite les trois mécanismes travaillant de concert</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general2" class="checklist-checkbox">
+                        <label for="general2" class="checklist-label">
+                            <strong>Documenter toute la configuration</strong>
+                            <p>Maintenir une documentation claire : quels services envoient des emails, configuration DNS, contacts responsables</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general3" class="checklist-checkbox">
+                        <label for="general3" class="checklist-label">
+                            <strong>Surveiller les métriques de délivrabilité</strong>
+                            <p>Suivre le taux d'emails marqués comme spam, taux d'ouverture, et rebonds (bounces)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general4" class="checklist-checkbox">
+                        <label for="general4" class="checklist-label">
+                            <strong>Effectuer des tests réguliers</strong>
+                            <p>Tester mensuellement avec mail-tester.com, MXToolbox et envoyer des emails de test</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general5" class="checklist-checkbox">
+                        <label for="general5" class="checklist-label">
+                            <strong>Former l'équipe technique</strong>
+                            <p>Assurer que développeurs et administrateurs comprennent l'importance de ces protections</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general6" class="checklist-checkbox">
+                        <label for="general6" class="checklist-label">
+                            <strong>Planifier une revue trimestrielle</strong>
+                            <p>Vérifier tous les 3 mois : configuration actuelle, rapports DMARC, nouveaux services à ajouter</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general7" class="checklist-checkbox">
+                        <label for="general7" class="checklist-label">
+                            <strong>Mettre en place des alertes automatiques</strong>
+                            <p>Configurer des notifications si le taux d'échec SPF/DKIM dépasse un seuil (ex: 5%)</p>
+                        </label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="general8" class="checklist-checkbox">
+                        <label for="general8" class="checklist-label">
+                            <strong>Préparer un plan de réponse aux incidents</strong>
+                            <p>Savoir quoi faire si des emails légitimes sont rejetés ou si une usurpation est détectée</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info" style="margin-top: 2rem;">
+                <strong>💾 Astuce :</strong>
+                Vous pouvez imprimer cette page ou l'utiliser comme référence lors de vos audits de sécurité email. Les checkbox sont interactives et persistent dans votre session navigateur !
+            </div>
+
+            <div class="cards-grid" style="margin-top: 2rem;">
+                <div class="card card-primary">
+                    <h4>🔧 Outils recommandés</h4>
+                    <ul>
+                        <li><strong>MXToolbox.com</strong> - Vérification complète</li>
+                        <li><strong>Mail-tester.com</strong> - Test qualité email</li>
+                        <li><strong>DMARC Analyzer</strong> - Analyse rapports</li>
+                        <li><strong>Kitterman SPF Validator</strong> - Test SPF</li>
+                    </ul>
+                </div>
+                <div class="card card-secondary">
+                    <h4>📚 Ressources utiles</h4>
+                    <ul>
+                        <li>RFC 7208 (SPF)</li>
+                        <li>RFC 6376 (DKIM)</li>
+                        <li>RFC 7489 (DMARC)</li>
+                        <li>Documentation fournisseurs email</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
